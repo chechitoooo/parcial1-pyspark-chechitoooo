@@ -1,6 +1,50 @@
-📄 Archivo docker-compose.yml
+# 📊 Parcial 1 - Análisis Exploratorio con PySpark
+
+Repositorio del **Parcial 1 de Machine Learning**, donde se realiza un **Análisis Exploratorio de Datos (EDA)** utilizando **PySpark**, ejecutado en un entorno **Docker + JupyterLab**.
+
+El objetivo es analizar un dataset de canciones de Spotify utilizando herramientas de procesamiento de datos a gran escala.
 
 ```bash
+
+# 📁 Estructura del repositorio
+parcial1-pyspark-usuario/
+│
+├── docker-compose.yml
+├── README.md
+│
+├── data/
+│ └── spotify_songs.csv
+│
+└── notebooks/
+└── analisis_exploratorio.ipynb
+```
+**Descripción de carpetas**
+
+| Carpeta | Descripción |
+|--------|-------------|
+| `data/` | Contiene el dataset utilizado para el análisis |
+| `notebooks/` | Notebook con todo el análisis exploratorio realizado en PySpark |
+| `docker-compose.yml` | Configuración del entorno Docker |
+| `README.md` | Documentación del proyecto |
+
+---
+
+# 🐳 Infraestructura con Docker
+
+El proyecto utiliza **Docker Compose** para crear un entorno reproducible con:
+
+- Python
+- PySpark
+- JupyterLab
+- Librerías de análisis de datos
+
+Esto permite ejecutar el análisis **sin instalar dependencias manualmente**.
+
+---
+
+# 📄 Archivo `docker-compose.yml`
+
+```yaml
 version: '3.8'
 
 services:
@@ -15,213 +59,170 @@ services:
     environment:
       - JUPYTER_ENABLE_LAB=yes
 ```
-🔍 Explicación detallada de cada componente
-1. 🔢 version: '3.8'
-❓ ¿Qué es y para qué sirve?
 
-Especifica la versión del formato de archivo de Docker Compose que se está utilizando 
+🔍 Explicación de cada componente
+1️⃣ version: '3.8'
 
-La versión 3.8 es compatible con Docker Engine 19.03.0+ 
+Define la versión del formato de Docker Compose que se está utilizando.
 
-💡 Importancia:
+La versión 3.8 es compatible con versiones modernas de Docker Engine y permite usar configuraciones avanzadas.
 
-Diferentes versiones soportan diferentes características y sintaxis 🎯
+🔍Importancia
 
-La versión 3.8 incluye soporte para:
+1. Define la sintaxis disponible
 
-⚙️ Configuraciones avanzadas de recursos
+2. Habilita funcionalidades avanzadas
 
-📋 Perfiles de servicios
+3. Mantiene compatibilidad con Docker
 
-🔗 Mejor manejo de dependencias entre contenedores
+2️⃣ services
 
-🌍 Variables de entorno extendidas
+La sección services define los contenedores que se ejecutarán como parte del proyecto.
 
-2. 🛠️ services:
-❓ ¿Qué hace esta sección?
-
-Define los contenedores que se van a ejecutar como parte de la aplicación 🐳
-
-En este caso, hay un solo servicio llamado pyspark-jupyter 📌
-
-Cada servicio representa un contenedor independiente 📦
-
-💡 Importancia:
-
-Permite definir múltiples servicios que pueden trabajar juntos  🤝
-
-Facilita la orquestación de aplicaciones multicontenedor 🎼
-
-Define cómo cada contenedor debe ser configurado y ejecutado ⚙️
-
-3. 🖼️ image: jupyter/pyspark-notebook:latest
-❓ ¿De dónde viene esta imagen?
-
-Es una imagen preconstruida disponible en Docker Hub 🌐
-
-jupyter/ es el usuario/organización oficial en Docker Hub 👤
-
-pyspark-notebook es el nombre específico de la imagen 📛
-
-latest es el tag que indica la versión más reciente ✨
-
-📦 Contenido de la imagen:
-
-📓 Jupyter Notebook / JupyterLab
-
-⚡ Apache Spark preinstalado y configurado
-
-🐍 PySpark para trabajar con Spark desde Python
-
-📊 Python con bibliotecas científicas (NumPy, Pandas, Matplotlib, etc.)
-
-🔧 Kernel de Scala para notebooks
-
-💻 Herramientas de línea de comandos para Spark
-
-🎯 Origen y mantenimiento:
-
-Mantenida oficialmente por el proyecto Jupyter 👨‍💻
-
-Actualizada regularmente con las últimas versiones 🔄
-
-Ampliamente utilizada en entornos académicos y profesionales 🎓
-
-4. 🔌 ports: "8888:8888"
-❓ ¿Qué significa el mapeo de puertos?
-
-Formato: "puerto_host:puerto_contenedor" 📍
-
-8888:8888 mapea el puerto 8888 del contenedor al puerto 8888 de tu máquina local 💻
-
-📝 Explicación detallada:
-
-Jupyter corre en el puerto 8888 dentro del contenedor 🏠
-
-Sin mapeo, el servicio estaría aislado e inaccesible 🚫
-
-Con el mapeo, puedes acceder desde tu navegador usando http://localhost:8888 🌐
-
-💡 Importancia:
-
-Permite la comunicación entre el contenedor y el exterior 📡
-
-Facilita el acceso a servicios web dentro del contenedor 🌍
-
-Puedes mapear múltiples puertos si es necesario (ej: 4040 para Spark UI) 🔢
-
-5. 💾 volumes:
+En este caso se define un único servicio:
 ```bash
+pyspark-jupyter
+```
+
+Este servicio ejecuta el entorno de trabajo con PySpark y JupyterLab.
+
+Ventajas
+
+1.Permite ejecutar múltiples contenedores
+
+2. Facilita la orquestación de servicios
+
+3. Define cómo se ejecuta cada contenedor
+
+4️⃣ ports: 8888:8888
+
+Define el mapeo de puertos entre el contenedor y la máquina local.
+
+Formato:
+```bash
+puerto_host : puerto_contenedor
+```
+En este caso:
+```bash
+8888:8888
+```
+
+Significa que el puerto 8888 del contenedor se conecta con el puerto 8888 de tu computadora.
+
+Esto permite acceder a Jupyter desde el navegador:
+```bash
+http://localhost:8888
+```
+
+
+5️⃣ volumes
+
 volumes:
+
+```bash
   - ./notebooks:/home/jovyan/work/notebooks
   - ./data:/home/jovyan/work/data
 ```
+Los volumes conectan carpetas de tu computadora con el contenedor.
 
-¿Qué hacen?
+Formato:
 
-Crean un "puente" o montaje entre tu máquina local y el contenedor
+ruta_local : ruta_contenedor
 
-Formato: "ruta_en_host:ruta_en_contenedor"
+📁 Primer volumen
 
-💡Sincronizan archivos entre ambos sistemas en tiempo real
+```bash
+./notebooks → /home/jovyan/work/notebooks
+```
+Guarda los notebooks del proyecto.
 
-Primer volumen: ./notebooks:/home/jovyan/work/notebooks
+Los archivos se almacenan directamente en tu computadora.
 
-Monta la carpeta local ./notebooks en el contenedor
+📁 Segundo volumen
 
-💡Los notebooks que crees se guardarán automáticamente en tu máquina local
+```bash
+./data → /home/jovyan/work/data
+```
+Contiene los datasets utilizados en el análisis.
 
-Puedes usar tu editor favorito (VS Code, etc.) para editar los notebooks
+Los archivos colocados en esta carpeta pueden ser leídos por Spark dentro del contenedor.
 
-Segundo volumen: ./data:/home/jovyan/work/data
+📁¿Por qué son importantes los volumes?
 
-🔢 Monta la carpeta local ./data en el contenedor
+1. Persistencia de datos
 
-Los archivos de datos (CSV, JSON, etc.) que coloques aquí serán accesibles desde el contenedor
+- Si el contenedor se elimina, los archivos no se pierden.
 
-Ideal para datasets que necesitas procesar con Spark
+- Todo queda guardado en tu computadora.
 
-¿Por qué son importantes? (Beneficios clave)
+2. Sincronización automática
 
-🔢 Persistencia de datos:
+- Los cambios hechos en el contenedor aparecen en tu máquina y viceversa.
 
-Si borras el contenedor, tus notebooks y datos no se pierden
+3. Control de versiones
 
-Todo queda guardado en tu máquina local
+- Los notebooks pueden ser versionados con Git.
 
-Compartir archivos bidireccional:
+6️⃣ environment
 
-Puedes crear/modificar notebooks desde el contenedor y verlos en tu máquina
+```bash
+JUPYTER_ENABLE_LAB=yes
+```
+Esta variable activa JupyterLab en lugar del Jupyter Notebook clásico.
 
-Puedes copiar datasets a ./data y el contenedor los verá automáticamente
+-Ventajas de JupyterLab
 
-Control de versiones:
+1.Interfaz moderna
 
-Puedes versionar tus notebooks con git desde tu máquina local
+2. Soporte para múltiples pestañas
 
-Los cambios se reflejan inmediatamente en ambos lados
+3. Explorador de archivos integrado
 
-Flexibilidad de desarrollo:
+4. Terminal dentro del navegador
 
-Usa Jupyter para ejecutar código
+5. Editor de código avanzado
 
-Usa tu editor local para editar
+6. Mejor manejo de proyectos
 
-Lo mejor de ambos mundos
+⚙️ Cómo ejecutar el proyecto
 
-Separación de concerns:
+1️⃣ Clonar el repositorio
+```bash
+git clone https://github.com/chechitoooo/parcial1-pyspark-usuario
+```
+2️⃣ Entrar al directorio
 
-Código en ./notebooks
+```bash
+cd parcial1-pyspark-usuario
+```
+3️⃣ Ejecutar Docker Compose
 
-Datos en ./data
+```bash
+docker-compose up
+```
 
-Organización clara del proyecto
+4️⃣ Abrir en el navegador
+```bash
+http://localhost:8888
+```
 
-6. environment: JUPYTER_ENABLE_LAB=yes
-¿Para qué sirve esta variable de entorno?
+🖥️ Arquitectura del entorno
 
-Función principal:
-
-Activa JupyterLab en lugar del clásico Jupyter Notebook
-
-JupyterLab es la interfaz moderna y más completa del proyecto Jupyter
-
-Características de JupyterLab:
-
-✅ Interfaz con múltiples pestañas
-
-✅ Arrastrar y soltar celdas
-
-✅ Vista de archivos integrada
-
-✅ Múltiples kernels en la misma ventana
-
-✅ Extensiones y plugins
-
-✅ Mejor manejo de grandes conjuntos de datos
-
-✅ Terminal integrado
-
-✅ Editor de texto con resaltado de sintaxis
-
-✅ Sistema de paneles divididos
-
-
-┌─────────────────────────────────────────────────────────┐
-│                    TU MÁQUINA LOCAL                      │
-│  ┌─────────────────────────────────────────────────────┐ │
-│  │  📁 ./notebook  ←→  📓 Jupyter Notebooks           │ │
-│  │  📁 ./data       ←→  📊 Datasets                    │ │
-│  └─────────────────────────────────────────────────────┘ │
-│                      🔌 Puerto 8888                       │
-└─────────────────────────────────────────────────────────┘
-                            ↓
-┌─────────────────────────────────────────────────────────┐
-│                 CONTENEDOR DOCKER                        │
-│  ┌─────────────────────────────────────────────────────┐ │
-│  │  🐍 PySpark + JupyterLab                            │ │
-│  │  📊 Procesamiento de datos                          │ │
-│  │  📓 Notebooks en /home/jovyan/work/notebooks        │ │
-│  │  📁 Datos en /home/jovyan/work/data                 │ │
-│  └─────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────┘
+```bash
+TU COMPUTADORA
+│
+├── notebooks/
+│     └── analisis_exploratorio.ipynb
+│
+├── data/
+│     └── spotify_songs.csv
+│
+└── Puerto 8888
+        ↓
+CONTENEDOR DOCKER
+│
+├── PySpark
+├── JupyterLab
+├── Notebooks → /home/jovyan/work/notebooks
+└── Datos → /home/jovyan/work/data
+```
